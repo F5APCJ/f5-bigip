@@ -1,52 +1,20 @@
 # Create F5 BIG-IP VM or General VM
-This module is supporting to create F5 BIG-IP VM with blueprints_tranquility(https://github.com/aztfmod/blueprints/tree/master/blueprint_tranquility).<br>
+This module is supporting to create F5 BIG-IP VM with landingzone_vdc_demo( https://www.arnaudlheureux.io/2019/11/15/cloud-adoption-framework-landing-zones-with-terraform/ )which is more developped compared to the previous version blueprints_tranquility(https://github.com/aztfmod/blueprints/tree/master/blueprint_tranquility).<br>
 This is working as one of its module and also you can use this for your own standalone VM creator after some modify.
+You can check the previous version detail from README_v0.md file.
 
 ## Getting Started
 You need to update VM and plan part of the variable.tf file for your environment.<br/>
-and add some inforamtion(your own information) to end of the foundations.auto.tfvars/foundations.tf files like following
+and add some inforamtion(your own information) to end of the foundations.tf file under landingzone_vdc_demo root diretory.
+You can use all of the defaults parameters for your testing after some files updating like blueprint.tf, output.tf under each blueprint_networking directories where you want to add BIG-IP with main module file for F5BIG-IP.
 
-# virtual network info in foundations.auto.tfvars<br>
-#virtual network<br>
-shared_services_vnet = {<br>
-   region1 = {<br>
-     vnet = {<br>
-       name                = "sg1vnetdmz"<br>
-       address_space       = ["10.101.4.0/22"]<br>
-       dns                 = ["192.168.0.16", "192.168.0.64"]<br>
-     },<br>
-    specialsubnets     = {<br>
-      AzureFirewallSubnet = {<br>
-        name                = "AzureFirewallSubnet"<br>
-        cidr                = "10.101.4.0/25"<br>
-        service_endpoints   = []<br>
-        }<br>
-     },<br>
-   subnets = {<br>
-     Subnet_4       = {<br>
-       name                = "Intranet"<br>
-       cidr                = "10.101.5.0/24"<br>
-       service_endpoints   = ["Microsoft.EventHub"]<br>
-       nsg_inbound         = [<br>
-         ["OFFICE", "100", "Inbound", "Allow", "*", "*", "*", "40.60.110.50/32", "*"],<br>
-         ["HOME", "110", "Inbound", "Allow", "*", "*", "*", "50.180.140.40/32", "*"],<br>
-       ]<br>
-       nsg_outbound        = []<br>
-      },<br>
-     Subnet_6       = {<br>
-       name                = "IDS"<br>
-       cidr                = "10.101.7.0/24"<br>
-       service_endpoints   = ["Microsoft.EventHub"]<br>
-       nsg_inbound         = [<br>
-         ["OFFICE", "100", "Inbound", "Allow", "*", "*", "*", "42.61.112.56/32", "*"],<br>
-       ]<br>
-       nsg_outbound        = []<br>
-       }<br>
-    }<br>
-  }<br>
-}<br>
-![example](https://github.com/jungcheolkwon/f5-bigip/blob/master/foundations.auto.tfvars.png)
-  
+If you want to add BIG-IP into blueprint_networking_shared_egress and blueprint_networking_shared_transit, you need to edit 2 files(blueprint.tf, output.tf) in the each directory and add F5BIGIP_Egress.tf, F5BIGIP_Transit.tf.
+Of course, you can use your won module name not use them(F5BIGIP_Egress.tf, F5BIGIP_Transit.tf).
+
+So, let's see example lines for each file.
+# blueprint_networking
+
+
   
 # F5 module in foundations.tf
 #Create F5 BIGIP VE<br>
